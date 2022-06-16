@@ -1,0 +1,30 @@
+{
+  "name": "node-red-auth-pam",
+  "version": "1.0.0",
+  "description": "Use mounted group/shadow file to authenticate with Node-Red. Made purely for running Node-Red on WAGO controllers! Will not suit everyone's needs.",
+  "main": "index.js",
+  "type": "commonjs",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/HeroBalancer/node-red-auth-pam.git"
+  },
+  "keywords": [
+    "node-red",
+    "auth",
+    "pam",
+    "wago"
+  ],
+  "author": "TruDan97",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/HeroBalancer/node-red-auth-pam/issues"
+  },
+  "homepage": "https://github.com/HeroBalancer/node-red-auth-pam#readme",
+  "dependencies": {
+    "bcrypt": "^5.0.1",
+    "sha512crypt-node": "^1.0.2"
+  }
+}

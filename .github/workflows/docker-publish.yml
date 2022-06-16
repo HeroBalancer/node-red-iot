@@ -1,0 +1,89 @@
+name: Build & Deploy Docker
+
+on:
+  push:
+    branches:
+      - master
+
+env:
+  IMAGE_ID: ""
+  IMAGE_TAG: ""
+  IMAGE_NAME: node-red-iot
+  DEPLOYMENT_NAME: node-red-iot
+  DOCKERFILEPATH: "./Dockerfile"
+  NodeEnvironment: ""
+  CI_REPOSITORY_URL: https://github.com/${{ github.repository }}
+  CI_COMMIT_REF_NAME: ${{ github.ref }}
+  CI_COMMIT_SHA: ${{ github.sha }}
+
+jobs:
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+
+        - name: Checkout
+          uses: actions/checkout@v2
+
+        - name: Set up QEMU
+          uses: docker/setup-qemu-action@v1
+
+        - name: Set up Docker Buildx
+          uses: docker/setup-buildx-action@v1
+
+        - name: Login to GitHub Container Registry
+          uses: docker/login-action@v1
+          with:
+            registry: ghcr.io
+            username: ${{ secrets.OCTOKIT_OAUTHUSER }}
+            password: ${{ secrets.OCTOKIT_OAUTHTOKEN }}
+
+        - name: Prepare for build
+          id: docker_prep
+          run: |
+            IMAGE_ID=ghcr.io/${{ github.repository_owner }}/$IMAGE_NAME
+
+            # Change all uppercase to lowercase
+            IMAGE_ID=$(echo $IMAGE_ID | tr '[A-Z]' '[a-z]')
+
+            # Strip git ref prefix from version
+            VERSION=$(echo "${{ github.ref }}" | sed -e 's,.*/\(.*\),\1,')
+
+            # Strip "v" prefix from tag name
+            [[ "${{ github.ref }}" == "refs/tags/"* ]] && VERSION=$(echo $VERSION | sed -e 's/^v//')
+            BRANCH=$VERSION
+            SHA=$(git rev-parse --short HEAD)
+
+            echo "REPO_REF_NAME=$VERSION" >> $GITHUB_ENV
+            echo "::set-output name=repo_ref_name::$VERSION"
+
+            # Use Docker `latest` tag convention
+            [ "$VERSION" == "master" ] && VERSION=latest
+            echo IMAGE_ID=$IMAGE_ID
+            echo VERSION=$VERSION
+            echo BRANCH=$BRANCH
+            echo SHA=$SHA
+
+            echo "IMAGE_TAG1=$VERSION" >> $GITHUB_ENV
+            echo "IMAGE_TAG2=$BRANCH-$GITHUB_RUN_NUMBER-$SHA" >> $GITHUB_ENV
+
+            echo "IMAGE_IDENTIFIER1=$IMAGE_ID:$VERSION" >> $GITHUB_ENV
+            echo "IMAGE_IDENTIFIER2=$IMAGE_ID:$BRANCH-$GITHUB_RUN_NUMBER-$SHA" >> $GITHUB_ENV
+
+        - name: Build and Push
+          uses: docker/build-push-action@v2
+          id: docker_build
+          with:
+            push: true
+            cache-from: type=registry,ref=${{ env.IMAGE_IDENTIFIER1 }}
+            cache-to: type=inline
+            tags: |
+              "${{ env.IMAGE_IDENTIFIER1 }}"
+              "${{ env.IMAGE_IDENTIFIER2 }}"
+            context: .
+            file: "${{ env.DOCKERFILEPATH }}"
+            platforms: linux/arm/v7,linux/amd64
+            build-args: |
+              "NODE_ENV=${{ env.NodeEnvironment }}"
+            secrets: |
+              GIT_AUTH_TOKEN=${{ secrets.OCTOKIT_OAUTHTOKEN }}
