@@ -16,7 +16,8 @@ RUN npm install --save \
     node-red-contrib-timerswitch \
     node-red-contrib-ui-led \
     node-red-dashboard \
-    node-red-node-openweathermap 
+    node-red-node-openweathermap  \
+    node-red-contrib-influxdb
 
 FROM nodered/node-red:${NODERED_VERSION}-${NODEJS_VERSION_MAJOR}-minimal as base
 USER root
