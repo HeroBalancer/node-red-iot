@@ -35,7 +35,7 @@ USER node-red
 FROM scratch as final
 LABEL maintainer = HeroBalancer <development@herobalancer.nl>
 LABEL description="node-red with preinstalled modules specifically for HeroBalancer"
-COPY --from=base / /
+COPY --from=build-deps / /
 USER node-red
 # USER node-red
 WORKDIR /usr/src/node-red
