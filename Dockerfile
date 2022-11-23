@@ -21,7 +21,7 @@ RUN npm install --save \
     node-red-node-serialport
 
 #FROM nodered/node-red:${NODERED_VERSION}-${NODEJS_VERSION_MAJOR}-minimal as base
-#USER root
+USER root
 
 #WORKDIR /usr/src/node-red
 #COPY --from=build-deps /usr/src/node-red/ /usr/src/node-red/
