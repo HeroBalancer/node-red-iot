@@ -20,6 +20,8 @@ RUN npm install --save \
     node-red-contrib-influxdb \
     node-red-node-serialport
 
+RUN npm rebuild --build-from-source
+
 #FROM nodered/node-red:${NODERED_VERSION}-${NODEJS_VERSION_MAJOR}-minimal as base
 USER root
 
@@ -37,7 +39,7 @@ LABEL maintainer = HeroBalancer <development@herobalancer.nl>
 LABEL description="node-red with preinstalled modules specifically for HeroBalancer"
 COPY --from=build-deps / /
 USER node-red
-# USER node-red
+# USER node-redk
 WORKDIR /usr/src/node-red
 
 EXPOSE 1880
