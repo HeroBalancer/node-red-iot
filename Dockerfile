@@ -43,5 +43,7 @@ USER node-red
 # USER node-redk
 WORKDIR /usr/src/node-red
 
+ENV TZ=Europe/Amsterdam
+
 EXPOSE 1880
 ENTRYPOINT ["npm", "start", "--cache", "/data/.npm", "--", "--userDir", "/data"]
