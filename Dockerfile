@@ -18,7 +18,8 @@ RUN npm install --save \
     node-red-dashboard \
     node-red-node-openweathermap  \
     node-red-contrib-influxdb \
-    node-red-contrib-buffer-parser
+    node-red-contrib-buffer-parser \
+    node-red-contrib-bacnet
 
 FROM nodered/node-red:${NODERED_VERSION}-${NODEJS_VERSION_MAJOR}-minimal as base
 USER root
