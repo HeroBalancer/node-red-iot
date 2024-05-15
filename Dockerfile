@@ -19,7 +19,8 @@ RUN npm install --save \
     node-red-node-openweathermap  \
     node-red-contrib-influxdb \
     node-red-contrib-buffer-parser \
-    node-red-node-serialport
+    node-red-node-serialport \
+    node-red-contrib-bacnet
 
 RUN npm rebuild --build-from-source
 
