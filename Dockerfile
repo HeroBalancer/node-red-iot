@@ -8,7 +8,7 @@ RUN npm install --save \
     --unsafe-perm \
     --no-update-notifier \
     --no-fund \
-    --only=production  \
+    --omit=dev \
     bcrypt \
     sha512crypt-node \
     node-red-contrib-modbus \
