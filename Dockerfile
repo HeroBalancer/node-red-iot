@@ -1,16 +1,17 @@
 ARG NODERED_VERSION=4.0.8
-ARG NODEJS_VERSION_MAJOR=22
+ARG NODEJS_VERSION_MAJOR=18
 
 FROM nodered/node-red:${NODERED_VERSION}-${NODEJS_VERSION_MAJOR} as build-deps
 USER node-red
 WORKDIR /usr/src/node-red/
+
+ENTRYPOINT [ "/bin/bash" ]
+
 RUN npm install --save \
     --unsafe-perm \
     --no-update-notifier \
     --no-fund \
     --omit=dev \
-    bcrypt \
-    sha512crypt-node \
     node-red-contrib-modbus \
     node-red-contrib-modbustcp \
     node-red-contrib-timerswitch \
@@ -20,7 +21,9 @@ RUN npm install --save \
     node-red-contrib-influxdb \
     node-red-contrib-buffer-parser \
     node-red-node-serialport \
-    node-red-contrib-bacnet
+    node-red-contrib-bacnet\
+    sha512crypt-node \
+    bcrypt 
 
 RUN npm rebuild --build-from-source
 
@@ -36,6 +39,7 @@ COPY ./packages/node-red-auth-pam/ /usr/src/node-red/node_modules/node-red-auth-
 RUN chown -R node-red:node-red /usr/src/node-red/
 USER node-red
 
+# Make it one single part since WAGO PLC's are single core and cannot handle multiple
 FROM scratch as final
 LABEL maintainer = HeroBalancer <development@herobalancer.nl>
 LABEL description="node-red with preinstalled modules specifically for HeroBalancer"
