@@ -24,7 +24,6 @@ module.exports = {
             if (user) {
                 // Resolve with the user object. Equivalent to having
                 // called users(username);
-                console.log("Comparing password for user", username, password, user.password);
                 if (authLib.validateUserPassword(username, password)) {
                     console.log(`User '${username}' logged in successfully.`)
                     resolve(user);
