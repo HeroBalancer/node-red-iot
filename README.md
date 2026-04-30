@@ -17,6 +17,7 @@ The image is based on the original Node-RED image (see: https://hub.docker.com/r
 - node-red-dashboard
 - node-red-contrib-telegrambot
 - node-red-contrib-bacnet
+- node-red-contrib-m-bus
     
 ## Image Variations
 The Node-RED images come in different variations and are supported by manifest lists (auto-detect architecture).
