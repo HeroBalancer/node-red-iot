@@ -12,7 +12,8 @@ RUN npm install --save \
     --no-update-notifier \
     --no-fund \
     --omit=dev \
-    node-red-contrib-m-bus \
+    node-mbus@2.2.4
+    node-red-contrib-m-bus@3.2.1 \
     node-red-contrib-modbus \
     node-red-contrib-modbustcp \
     node-red-contrib-timerswitch \
