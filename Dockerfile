@@ -12,7 +12,7 @@ RUN npm install --save \
     --no-update-notifier \
     --no-fund \
     --omit=dev \
-    node-mbus@2.2.4
+    node-mbus@2.2.4 \
     node-red-contrib-m-bus@3.2.1 \
     node-red-contrib-modbus \
     node-red-contrib-modbustcp \
